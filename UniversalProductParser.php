@@ -68,25 +68,26 @@ class UniversalProductParser
 //                }
                 $isItemAlreadyExists[$itemCode] = true;
                 
-                $itemToInsert = array('Chainid'             => (string)$singleItem->Chainid,
-                                      'SubChainid'          => (string)$singleItem->SubChainid,
-                                      'Storeid'             => (string)$singleItem->Storeid,
-                                      'PriceUpdateDate'     => (string)$singleItem->PriceUpdateDate,
-                                      'PriceUpdateTime'     => (string)$singleItem->PriceUpdateTime,
-                                      'ItemCode'            => (string)$singleItem->ItemCode,
-                                      'ItemName'            => (string)$singleItem->ItemName,
-                                      'Quantity'            => (string)$singleItem->Quantity,
-                                      'UnitOfMeasure'       => (string)$singleItem->UnitOfMeasure,
-                                      'QtyInPackage'        => (string)$singleItem->QtyInPackage,
-                                      'ItemPrice'           => (string)$singleItem->ItemPrice,
-                                      'UnitOfMeasurePrice'  =>(string)$singleItem->UnitOfMeasurePrice);
+//                $itemToInsert = array('Chainid'             => (string)$singleItem->Chainid,
+//                                      'SubChainid'          => (string)$singleItem->SubChainid,
+//                                      'Storeid'             => (string)$singleItem->Storeid,
+//                                      'PriceUpdateDate'     => (string)$singleItem->PriceUpdateDate,
+//                                      'PriceUpdateTime'     => (string)$singleItem->PriceUpdateTime,
+//                                      'ItemCode'            => (string)$singleItem->ItemCode,
+//                                      'ItemName'            => (string)$singleItem->ItemName,
+//                                      'Quantity'            => (string)$singleItem->Quantity,
+//                                      'UnitOfMeasure'       => (string)$singleItem->UnitOfMeasure,
+//                                      'QtyInPackage'        => (string)$singleItem->QtyInPackage,
+//                                      'ItemPrice'           => (string)$singleItem->ItemPrice,
+//                                      'UnitOfMeasurePrice'  =>(string)$singleItem->UnitOfMeasurePrice);
+                $itemToInsert = array('ItemCode'            => (string)$singleItem->ItemCode);
     
                 $parsedItemsList[] = $itemToInsert;
-                $numOfItems++;
-                if ($numOfItems > 100)
-                {
-                    return $parsedItemsList;
-                }
+//                $numOfItems++;
+//                if ($numOfItems > 100)
+//                {
+//                    return $parsedItemsList;
+//                }
             }
         }
 
