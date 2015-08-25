@@ -7,49 +7,74 @@ require_once './dal.php';
 
 
 
-$dal = DAL::GetInstance();
-$downloadedImages = $dal->GetDownloadedImages();
 
-$imageTopath = array();
-$imageCount = 0;
-foreach ($downloadedImages as $singleImage)
+$allProductsJson = file_get_contents('all_products_from_client.json');
+$allProducts = json_decode($allProductsJson, true);
+
+$allImagesJson = file_get_contents('image_to_path.json');
+$allImages      = json_decode($allImagesJson, true);
+
+$count = 0;
+foreach ($allProducts as &$singleProduct)
 {
-    $productCode = $singleImage['ProductCode'];
-    $imageCount++;
-    
-    $folder     = '../Images/Images_png';
-    $fileName   = 'product_' . $productCode . '.png';
-    $imageFile = findfile($folder,'/' . $fileName . '.*$/');
-    if (count($imageFile) == 1)
+    $count++;
+    $singleProduct['ImagePath'] = '';
+    foreach ($allImages as $singleImage)
     {
-        $imageTopath[] = array('ItemCode'   => $productCode,
-                               'ImagePath'  => 'https://s3.amazonaws.com/compare.prices/product_images_png/product_' . $productCode . '.png');
-    }
-    else
-    {
-        $folder     = '../Images/Images_jpg';
-        $fileName   = 'product_' . $productCode . '.jpg';        
-        $imageFile = findfile($folder,'/' . $fileName . '.*$/');    
-    
-        if (count($imageFile) == 1)
+        if ($singleImage['ItemCode'] == $singleProduct['ItemCode'])
         {
-            $imageTopath[] = array('ItemCode'   => $productCode,
-                                   'ImagePath'  => 'https://s3.amazonaws.com/compare.prices/product_images_jpg/product_' . $productCode . '.jpg');
-        }
-        else
-        {
-            echo "Cannot find image for product $productCode";
+            $singleProduct['ImagePath'] = $singleImage['ImagePath'];
+            break;
         }
     }
-    
-//    if (($imageCount % 50) == 0)
-//    {
-//        echo "scanned $imageCount images </br>";
-//    }
 }
 
-    $imageTopathJson = json_encode($imageTopath, JSON_UNESCAPED_SLASHES);
-    echo $imageTopathJson;
+$allProductsUpdatedJson = json_encode($allProducts);
+echo $allProductsUpdatedJson;
+//
+//$dal = DAL::GetInstance();
+//$downloadedImages = $dal->GetDownloadedImages();
+//
+//$imageTopath = array();
+//$imageCount = 0;
+//foreach ($downloadedImages as $singleImage)
+//{
+//    $productCode = $singleImage['ProductCode'];
+//    $imageCount++;
+//    
+//    $folder     = '../Images/Images_png';
+//    $fileName   = 'product_' . $productCode . '.png';
+//    $imageFile = findfile($folder,'/' . $fileName . '.*$/');
+//    if (count($imageFile) == 1)
+//    {
+//        $imageTopath[] = array('ItemCode'   => $productCode,
+//                               'ImagePath'  => 'https://s3.amazonaws.com/compare.prices/product_images_png/product_' . $productCode . '.png');
+//    }
+//    else
+//    {
+//        $folder     = '../Images/Images_jpg';
+//        $fileName   = 'product_' . $productCode . '.jpg';        
+//        $imageFile = findfile($folder,'/' . $fileName . '.*$/');    
+//    
+//        if (count($imageFile) == 1)
+//        {
+//            $imageTopath[] = array('ItemCode'   => $productCode,
+//                                   'ImagePath'  => 'https://s3.amazonaws.com/compare.prices/product_images_jpg/product_' . $productCode . '.jpg');
+//        }
+//        else
+//        {
+//            echo "Cannot find image for product $productCode";
+//        }
+//    }
+//    
+////    if (($imageCount % 50) == 0)
+////    {
+////        echo "scanned $imageCount images </br>";
+////    }
+//}
+
+//    $imageTopathJson = json_encode($imageTopath, JSON_UNESCAPED_SLASHES);
+//    echo $imageTopathJson;
 //$universalParser = new UniversalProductParser();
 //
 //$productsList = $universalParser->Parse("../SuperSalPrices", "PriceFull7290027600007-", 'SuperSal');
