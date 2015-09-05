@@ -97,11 +97,20 @@ class DAL
     {
         foreach ($productsList as $singleProduct)
         {
-            $this->Insert(products_colection_for_images, array('ProductCode'    => $singleProduct['ItemCode'],
+            $this->Insert(products_colection_for_images, array('ProductCode'    => (string)$singleProduct['IC'],
                                                                'ImageStatus'    => 'NOT_DOWNLOADED'));
         }
     }
 
+    public function GetAllProducts() {
+        $criteria = array();
+        $return   = array('ImageStatus' => true, 'ProductCode' => true);
+        
+        $notDownloadedImageIterator = $this->Find(products_colection_for_images, $criteria, $return);
+        
+        return iterator_to_array($notDownloadedImageIterator);        
+    }
+    
     public function GetNotDownloadedImages()
     {
         $criteria = array('ImageStatus' => 'NOT_DOWNLOADED');
